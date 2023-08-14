@@ -25,32 +25,62 @@ class Serializer {
 
     let string = "";
 
-    const type = node.getType();
-    const attributes = node.getAttributes();
-    const children = node.getChildren();
+    if (node.isComponent()) {
+      const Component = node.getType();
+      const props = node.getProps();
 
-    const keys = Object.keys(attributes);
+      const component = new Component(props);
 
-    const attr =
-      keys.length > 0
-        ? keys
-            .map((key) => `${key}="${this.escape(attributes[key])}"`)
-            .join(" ")
-        : null;
+      const children = component.render();
 
-    const selfClose =
-      content === this.content.html && this.htmlSelfClosingTags.includes(type);
+      node.setChildren(children);
 
-    if (selfClose) {
-      string += `<${type}${attr !== null ? ` ${attr}` : ""}/>`;
-    } else {
-      string += `<${type}${attr !== null ? ` ${attr}` : ""}>`;
-
-      for (const child of children) {
+      for (const child of node.getChildren()) {
         string += this.serialize(child, content);
       }
+    } else if (node.isFunction()) {
+      const Function = node.getType();
+      const props = node.getProps();
 
-      string += `</${type}>`;
+      const children = Function(props);
+
+      node.setChildren(children);
+
+      for (const child of node.getChildren()) {
+        string += this.serialize(child, content);
+      }
+    } else if (node.isElement()) {
+      const type = node.getType();
+      const attributes = node.getAttributes();
+
+      const keys = Object.keys(attributes);
+
+      const attr =
+        keys.length > 0
+          ? keys
+              .map((key) => `${key}="${this.escape(attributes[key])}"`)
+              .join(" ")
+          : null;
+
+      const selfClose =
+        content === this.content.html &&
+        this.htmlSelfClosingTags.includes(type);
+
+      if (selfClose) {
+        string += `<${type}${attr !== null ? ` ${attr}` : ""}/>`;
+      } else {
+        string += `<${type}${attr !== null ? ` ${attr}` : ""}>`;
+
+        for (const child of node.getChildren()) {
+          string += this.serialize(child, content);
+        }
+
+        string += `</${type}>`;
+      }
+    } else if (node.isNull()) {
+      for (const child of node.getChildren()) {
+        string += this.serialize(child, content);
+      }
     }
 
     return string;
