@@ -1,0 +1,18 @@
+{
+  "name": "@untrue/serializer",
+  "version": "1.0.0",
+  "description": "XML and HTML serializer for Untrue.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iconshot/untrue-serializer.git"
+  },
+  "main": "index.js",
+  "keywords": [
+    "serializer",
+    "untrue"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "untrue": "^4.4.0"
+  }
+}
