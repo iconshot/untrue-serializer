@@ -12,7 +12,7 @@
     "untrue"
   ],
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "untrue": "^4.4.0"
   }
 }
