@@ -1,6 +1,6 @@
 {
   "name": "@untrue/serializer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "XML and HTML serializer for Untrue.",
   "repository": {
     "type": "git",
